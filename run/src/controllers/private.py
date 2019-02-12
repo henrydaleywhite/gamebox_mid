@@ -13,19 +13,19 @@ controller = Blueprint('private',__name__)
 @controller.route('/dashboard', methods=['GET','POST'])
 def dashboard():
     if request.method == 'GET':
-        user = User(row=session['user_dict'])
+        # receive json with key user info which contains a dict with 
+        # keys 'username', 'pk', 'email', and 'display_name'
+        user_credentials = request.get_json()
+        user = User(row=user_credentials['user_info'])
+        # get list of games that can be created
         start_game_list = user.get_available_games()
+        # get list of unfinished games user is involved with
         cur_game_list = user.get_user_active_games()
+        # get list of finished games user has played
         fin_game_list = user.get_user_finished_games()
-        return render_template('dashboard.html', start=start_game_list,
-                                cur=cur_game_list, fin=fin_game_list)
-    elif request.method == 'POST':
-        if request.form['button'] == 'Continue':
-            session['game'] = request.form['game']
-            return redirect(url_for('private.gamepage'))
-        elif request.form['button'] == 'Play':
-            session['to_start'] = request.form['game']
-            return redirect(url_for('private.setup'))
+        return jsonify({'start_list':start_game_list,
+                        'continue_list':cur_game_list,
+                        'finished_list':fin_game_list})
 
 
 @controller.route('/setup', methods=['GET','POST'])
