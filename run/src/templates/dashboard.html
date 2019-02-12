@@ -1,0 +1,26 @@
+<p><strong>Start list</strong></p>
+{% for item in start %}
+    <p>{{item['game_name']}} - {{item['description']}}</p>
+    <form action="/dashboard" method="post">
+        <input name="button" type="submit" value="Play">
+        <input name="game" style="visibility: hidden;" value="{{item['pk']}}">
+        <br>
+        <br>
+    </form>
+{% endfor %}
+<br>
+<p><strong>Current game list</strong></p>
+{% for item in cur %}
+    <p>pk {{item.pk}} - game pk {{item.game_pk}}</p>
+    <form action="/dashboard" method="post">
+        <input name="button" type="submit" value="Continue">
+        <input name="game" style="visibility: hidden;" value="{{item.playthrough_id}}">
+        <br>
+        <br>
+    </form>
+{% endfor %}
+<br>
+<p><strong>Finished game list</strong></p>
+{% for item in fin %}
+    <p>pk {{item.pk}} - game pk {{item.game_pk}} - {{item.game_state}}</p>
+{% endfor %}

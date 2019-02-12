@@ -1,0 +1,12 @@
+<p>Name - {{params['game_name']}}</p>
+<p>Description - {{params['description']}}</p>
+<p>Min - {{params['minimum_num_players']}}</p>
+<p>Max - {{params['maximum_num_players']}}</p>
+<form action="/setup" method="post">
+    {% for n in range(params['maximum_num_players'] - 1) %}
+        <p><input name="player {{n + 1}}" type="text" placeholder="Player Name"></p>
+    {% endfor %}
+    <input name="max_num" style="visibility: hidden;" value="{{params['maximum_num_players']}}">
+    <p><input name="button" type="submit" value="Create Game"></p>
+    <input name="game_pk" style="visibility: hidden;" value="{{params['pk']}}">
+</form>
